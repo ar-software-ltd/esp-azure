@@ -65,7 +65,7 @@ static char* lastErrorToString(DWORD lastError)
         result = printf_alloc(""); /*no error should appear*/
         if (result == NULL)
         {
-            (void)printf("failure in printf_alloc\r\n");
+            STRAUSS_LOG(eRecordDisable, "failure in printf_alloc\r\n");
         }
         else
         {
@@ -80,7 +80,7 @@ static char* lastErrorToString(DWORD lastError)
             result = printf_alloc("GetLastError()=0X%x", lastError);
             if (result == NULL)
             {
-                (void)printf("failure in printf_alloc\r\n");
+                STRAUSS_LOG(eRecordDisable, "failure in printf_alloc\r\n");
                 /*return as is*/
             }
             else
@@ -106,7 +106,7 @@ static char* lastErrorToString(DWORD lastError)
 
             if (result == NULL)
             {
-                (void)printf("failure in printf_alloc\r\n");
+                STRAUSS_LOG(eRecordDisable, "failure in printf_alloc\r\n");
                 /*return as is*/
             }
             else
@@ -142,7 +142,7 @@ static void lazyRegisterEventProvider(void)
         }
         else
         {
-            (void)printf("block_storage_2 ETW provider was NOT registered.");
+            STRAUSS_LOG(eRecordDisable, "block_storage_2 ETW provider was NOT registered.");
             (void)InterlockedExchange(&isETWLoggerInit, 0);
         }
     }

@@ -621,7 +621,7 @@ void print_commits_info(const char *username, const char *repo) {
     STRAUSS_LOG(eRecordDisable,"%-10.10s %-10.10s %s\n", "Date", "SHA", "Author");
     for (i = 0; i < json_array_get_count(commits); i++) {
         commit = json_array_get_object(commits, i);
-        printf("%.10s %.10s %s\n",
+        STRAUSS_LOG(eRecordDisable, "%.10s %.10s %s\n",
                json_object_dotget_string(commit, "commit.author.date"),
                json_object_get_string(commit, "sha"),
                json_object_dotget_string(commit, "commit.author.name"));
@@ -645,7 +645,7 @@ void persistence_example(void) {
         json_serialize_to_file(user_data, "user_data.json");
     }
     name = json_object_get_string(json_object(user_data), "name");
-    printf("Hello, %s.", name);
+    STRAUSS_LOG(eRecordDisable, "Hello, %s.", name);
     json_value_free(schema);
     json_value_free(user_data);
     return;
