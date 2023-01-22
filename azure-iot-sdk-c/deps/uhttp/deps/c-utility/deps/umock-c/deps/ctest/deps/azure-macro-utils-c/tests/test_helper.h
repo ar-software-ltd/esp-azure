@@ -17,7 +17,7 @@ do                                                                              
 {                                                                                                                                       \
     if (!(condition))                                                                                                                   \
     {                                                                                                                                   \
-        printf("condition \"" #condition "\" in " __FILE__ ":" TEST_HELPER_TO_STRING(__LINE__) " was UNEXPECTEDLY FALSE\n");            \
+        STRAUSS_LOG(eRecordDisable, "condition \"" #condition "\" in " __FILE__ ":" TEST_HELPER_TO_STRING(__LINE__) " was UNEXPECTEDLY FALSE\n");            \
         return __LINE__;                                                                                                                \
     }                                                                                                                                   \
 } while (0)

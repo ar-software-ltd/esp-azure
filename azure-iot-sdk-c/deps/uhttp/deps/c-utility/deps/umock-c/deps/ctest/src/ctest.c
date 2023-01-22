@@ -44,19 +44,19 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
     DWORD console_mode_initial = 0;
     if (std_out_handle == INVALID_HANDLE_VALUE)
     {
-        (void)printf("Error getting console handle, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
+        STRAUSS_LOG(eRecordDisable, "Error getting console handle, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
     }
     else
     {
         if (!GetConsoleMode(std_out_handle, &console_mode_initial))
         {
-            (void)printf("Error getting console mode, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
+            STRAUSS_LOG(eRecordDisable, "Error getting console mode, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
         }
         else
         {
             if (!SetConsoleMode(std_out_handle, console_mode_initial | ENABLE_VIRTUAL_TERMINAL_PROCESSING))
             {
-                (void)printf("Error setting console mode, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
+                STRAUSS_LOG(eRecordDisable, "Error setting console mode, no coloring available. GetLastError()=%" PRIx32 "\n", GetLastError());
             }
             else
             {
@@ -69,7 +69,7 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
 
     g_CurrentTestFunction = NULL;
 
-    (void)printf(" === Executing test suite %s ===\n", testSuiteName);
+    STRAUSS_LOG(eRecordDisable, " === Executing test suite %s ===\n", testSuiteName);
 
     while (currentTestFunction->TestFunction != NULL)
     {
@@ -105,14 +105,14 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
         else
         {
             testSuiteInitializeFailed = 1;
-            (void)printf("TEST_SUITE_INITIALIZE failed - suite ending\n");
+            STRAUSS_LOG(eRecordDisable, "TEST_SUITE_INITIALIZE failed - suite ending\n");
         }
     }
 
     if (testSuiteInitializeFailed == 1)
     {
         /* print results */
-        (void)printf(CTEST_ANSI_COLOR_RED "0 tests ran, ALL failed, NONE succeeded.\n" CTEST_ANSI_COLOR_RESET);
+        STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_RED "0 tests ran, ALL failed, NONE succeeded.\n" CTEST_ANSI_COLOR_RESET);
         failedTestCount = 1;
     }
     else
@@ -137,7 +137,7 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
                         else
                         {
                             testFunctionInitializeFailed = 1;
-                            (void)printf(CTEST_ANSI_COLOR_RED "TEST_FUNCTION_INITIALIZE failed - next TEST_FUNCTION will fail\n" CTEST_ANSI_COLOR_RESET);
+                            STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_RED "TEST_FUNCTION_INITIALIZE failed - next TEST_FUNCTION will fail\n" CTEST_ANSI_COLOR_RESET);
                         }
                     }
 
@@ -145,11 +145,11 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
                     if (testFunctionInitializeFailed)
                     {
                         *currentTestFunction->TestResult = TEST_FAILED;
-                        (void)printf(CTEST_ANSI_COLOR_YELLOW "Not executing test %s ...\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
+                        STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_YELLOW "Not executing test %s ...\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
                     }
                     else
                     {
-                        (void)printf("Executing test %s ...\n", currentTestFunction->TestFunctionName);
+                        STRAUSS_LOG(eRecordDisable, "Executing test %s ...\n", currentTestFunction->TestFunctionName);
 
                         g_CurrentTestFunction = currentTestFunction;
 
@@ -188,16 +188,16 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
                 if (*currentTestFunction->TestResult == TEST_FAILED)
                 {
                     failedTestCount++;
-                    (void)printf(CTEST_ANSI_COLOR_RED "Test %s result = !!! FAILED !!!\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
+                    STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_RED "Test %s result = !!! FAILED !!!\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
                 }
                 else if (*currentTestFunction->TestResult == TEST_NOT_EXECUTED)
                 {
                     failedTestCount++;
-                    (void)printf(CTEST_ANSI_COLOR_YELLOW "Test %s ... SKIPPED due to a failure in test function cleanup. \n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
+                    STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_YELLOW "Test %s ... SKIPPED due to a failure in test function cleanup. \n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
                 }
                 else
                 {
-                    (void)printf(CTEST_ANSI_COLOR_GREEN "Test %s result = Succeeded.\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
+                    STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_GREEN "Test %s result = Succeeded.\n" CTEST_ANSI_COLOR_RESET, currentTestFunction->TestFunctionName);
                 }
                 totalTestCount++;
             }
@@ -216,12 +216,12 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
         {
             /*only get here when testSuiteCleanup did asserted*/
             /*should fail the tests*/
-            (void)printf(CTEST_ANSI_COLOR_RED "TEST_SUITE_CLEANUP failed - all tests are marked as failed\n" CTEST_ANSI_COLOR_RESET);
+            STRAUSS_LOG(eRecordDisable, CTEST_ANSI_COLOR_RED "TEST_SUITE_CLEANUP failed - all tests are marked as failed\n" CTEST_ANSI_COLOR_RESET);
             failedTestCount = (totalTestCount > 0) ? totalTestCount : SIZE_MAX;
         }
 
         /* print results */
-        (void)printf("%s%d tests ran, %d failed, %d succeeded.\n" CTEST_ANSI_COLOR_RESET, (failedTestCount > 0) ? (CTEST_ANSI_COLOR_RED) : (CTEST_ANSI_COLOR_GREEN), (int)totalTestCount, (int)failedTestCount, (int)(totalTestCount - failedTestCount));
+        STRAUSS_LOG(eRecordDisable, "%s%d tests ran, %d failed, %d succeeded.\n" CTEST_ANSI_COLOR_RESET, (failedTestCount > 0) ? (CTEST_ANSI_COLOR_RED) : (CTEST_ANSI_COLOR_GREEN), (int)totalTestCount, (int)failedTestCount, (int)(totalTestCount - failedTestCount));
     }
 
 #if defined _MSC_VER && !defined(WINCE)
@@ -232,7 +232,7 @@ size_t RunTests(const TEST_FUNCTION_DATA* testListHead, const char* testSuiteNam
             /*revert console to initial state*/
             if (!SetConsoleMode(std_out_handle, console_mode_initial))
             {
-                (void)printf("Error resetting console mode to initial value of %" PRIx32 ". GetLastError()=%" PRIx32 "\n", console_mode_initial, GetLastError());
+                STRAUSS_LOG(eRecordDisable, "Error resetting console mode to initial value of %" PRIx32 ". GetLastError()=%" PRIx32 "\n", console_mode_initial, GetLastError());
             }
         }
     }
@@ -486,7 +486,7 @@ static char* ctest_vsprintf_char(const char* format, va_list va)
     int neededSize = vsnprintf(NULL, 0, format, va);
     if (neededSize < 0)
     {
-        (void)printf("failure in vsnprintf\n");
+        STRAUSS_LOG(eRecordDisable, "failure in vsnprintf\n");
         result = NULL;
     }
     else
@@ -494,14 +494,14 @@ static char* ctest_vsprintf_char(const char* format, va_list va)
         result = malloc(neededSize + 1);
         if (result == NULL)
         {
-            (void)printf("failure in malloc\n");
+            STRAUSS_LOG(eRecordDisable, "failure in malloc\n");
             /*return as is*/
         }
         else
         {
             if (vsnprintf(result, neededSize + 1, format, va) != neededSize)
             {
-                (void)printf("inconsistent vsnprintf behavior\n");
+                STRAUSS_LOG(eRecordDisable, "inconsistent vsnprintf behavior\n");
                 free(result);
                 result = NULL;
             }

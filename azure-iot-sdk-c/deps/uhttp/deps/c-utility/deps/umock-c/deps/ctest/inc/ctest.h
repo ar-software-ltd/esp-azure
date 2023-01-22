@@ -248,7 +248,7 @@ do { \
     if (MU_C2(type,_Compare)(A_value, B_value)) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d %s Expected: %s, Actual: %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message, expectedString, actualString); \
+        STRAUSS_LOG(eRecordDisable, "  Assert failed in line %d %s Expected: %s, Actual: %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message, expectedString, actualString); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, expectedString, actualString); \
@@ -266,7 +266,7 @@ do { \
     if (!MU_C2(type,_Compare)(A_value, B_value)) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d: %s Expected: %s, Actual: %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message, expectedString, actualString); \
+        STRAUSS_LOG(eRecordDisable,"  Assert failed in line %d: %s Expected: %s, Actual: %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message, expectedString, actualString); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, "some expected string", actualString); \
@@ -280,7 +280,7 @@ do \
     if (copy_of_value != NULL) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d: NULL expected, actual: 0x%p. %s\n", __LINE__, copy_of_value, (ctest_message == NULL) ? "" : ctest_message); \
+        STRAUSS_LOG(eRecordDisable, "  Assert failed in line %d: NULL expected, actual: 0x%p. %s\n", __LINE__, copy_of_value, (ctest_message == NULL) ? "" : ctest_message); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, "expected it to be NULL (actual is the value)", copy_of_value); \
@@ -295,7 +295,7 @@ do \
     if (copy_of_value == NULL) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d: non-NULL expected. %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message); \
+        STRAUSS_LOG(eRecordDisable, "  Assert failed in line %d: non-NULL expected. %s\n", __LINE__, (ctest_message == NULL) ? "" : ctest_message); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, "expected it not to be NULL (actual is value)", copy_of_value); \
@@ -308,7 +308,7 @@ do { \
     if (expression_is_false) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d: Expression should be true: %s. %s\n", __LINE__, #expression, (ctest_message == NULL) ? "" : ctest_message); \
+        STRAUSS_LOG(eRecordDisable, "  Assert failed in line %d: Expression should be true: %s. %s\n", __LINE__, #expression, (ctest_message == NULL) ? "" : ctest_message); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, "expected it to be true", "but it wasn't"); \
@@ -321,7 +321,7 @@ do { \
     if (expression_is_true) \
     { \
         char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-        (void)printf("  Assert failed in line %d: Expression should be false: %s. %s\n", __LINE__, #expression, (ctest_message == NULL) ? "" : ctest_message); \
+        STRAUSS_LOG(eRecordDisable,  Assert failed in line %d: Expression should be false: %s. %s\n", __LINE__, #expression, (ctest_message == NULL) ? "" : ctest_message); \
         ctest_sprintf_free(ctest_message); \
         if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
         do_jump(&g_ExceptionJump, "expected it to be false", "but it was true"); \
@@ -332,7 +332,7 @@ do { \
 do \
 { \
     char* ctest_message = GET_MESSAGE(__VA_ARGS__); \
-    (void)printf("  Assert failed in line %d: %s \n" , __LINE__, (ctest_message == NULL) ? "" : ctest_message); \
+    STRAUSS_LOG(eRecordDisable, "  Assert failed in line %d: %s \n" , __LINE__, (ctest_message == NULL) ? "" : ctest_message); \
     ctest_sprintf_free(ctest_message); \
     if (g_CurrentTestFunction != NULL) *g_CurrentTestFunction->TestResult = TEST_FAILED; \
     do_jump(&g_ExceptionJump, (void*)"nothing expected, 100% fail", (void*)"nothing actual, 100% fail"); \

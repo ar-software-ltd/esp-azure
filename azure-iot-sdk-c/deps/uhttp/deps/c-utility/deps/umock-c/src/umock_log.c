@@ -14,6 +14,6 @@ void UMOCK_LOG(const char* format, ...)
     va_start(params, format);
     (void)vprintf(format, params);
     va_end(params);
-    (void)printf("\r\n");
+    STRAUSS_LOG(eRecordDisable, "\r\n");
     umock_c_indicate_error(UMOCK_C_ERROR);
 }

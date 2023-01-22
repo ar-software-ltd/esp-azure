@@ -114,7 +114,7 @@ int run_mu_pri_enum_tests(void)
     POOR_MANS_ASSERT(verifyMU_ENUM_VALUE_BC_plus_1(MU_ENUM_VALUE(TEST_PRI_ENUM, (TEST_PRI_ENUM)(BC+1))) == 0);
 
     /*test that PRI_MU_ENUM and MU_ENUM_VALUE work together in printf*/
-    (void)printf("%" PRI_MU_ENUM "\n", MU_ENUM_VALUE(TEST_PRI_ENUM, A));
+    STRAUSS_LOG(eRecordDisable, "%" PRI_MU_ENUM "\n", MU_ENUM_VALUE(TEST_PRI_ENUM, A));
 
     /*test that MU_ENUM_VALUE is "",someString,someInt*/
     POOR_MANS_ASSERT(verifyMU_ENUM_VALUE_X2(MU_ENUM_VALUE_2(TEST_PRI_ENUM_2, X2)) == 0);
@@ -124,7 +124,7 @@ int run_mu_pri_enum_tests(void)
     POOR_MANS_ASSERT(verifyMU_ENUM_VALUE_7(MU_ENUM_VALUE_2(TEST_PRI_ENUM_2, (TEST_PRI_ENUM_2)(7))) == 0);
 
     /*test that PRI_MU_ENUM and MU_ENUM_VALUE work together in printf*/
-    (void)printf("%" PRI_MU_ENUM "\n", MU_ENUM_VALUE_2(TEST_PRI_ENUM_2, ZY2));
+    STRAUSS_LOG(eRecordDisable,"%" PRI_MU_ENUM "\n", MU_ENUM_VALUE_2(TEST_PRI_ENUM_2, ZY2));
 
     return 0;
 }

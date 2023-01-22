@@ -973,7 +973,7 @@ TEST_FUNCTION(xio_retrieveoptions_unhappypaths)
         umock_c_negative_tests_fail_call(i);
 
         ///act
-        (void)sprintf(temp_str, "On failed call %lu", (unsigned long)i);
+        STRAUSS_LOG(eRecordDisable, temp_str, "On failed call %lu", (unsigned long)i);
 
         ///act
         h = xio_retrieveoptions(x);

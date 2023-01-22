@@ -22,9 +22,9 @@ void UMOCK_LOG(const char* format, ...)
 {
     va_list params;
     va_start(params, format);
-    (void)vprintf(format, params);
+    STRAUSS_LOG(eRecordDisable, format, params);
     va_end(params);
-    (void)printf("\r\n");
+    STRAUSS_LOG(eRecordDisable, "\r\n");
     // Do not report error for this test
 }
 

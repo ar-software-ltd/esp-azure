@@ -12,7 +12,7 @@ static char* ctrs_vsprintf_char(const char* format, va_list va)
     int neededSize = vsnprintf(NULL, 0, format, va);
     if (neededSize < 0)
     {
-        (void)printf("failure in vsnprintf\n");
+        STRAUSS_LOG(eRecordDisable, "failure in vsnprintf\n");
         result = NULL;
     }
     else
@@ -20,14 +20,14 @@ static char* ctrs_vsprintf_char(const char* format, va_list va)
         result = malloc(neededSize + 1);
         if (result == NULL)
         {
-            (void)printf("failure in malloc\n");
+            STRAUSS_LOG(eRecordDisable, "failure in malloc\n");
             /*return as is*/
         }
         else
         {
             if (vsnprintf(result, neededSize + 1, format, va) != neededSize)
             {
-                (void)printf("inconsistent vsnprintf behavior\n");
+                STRAUSS_LOG(eRecordDisable, "inconsistent vsnprintf behavior\n");
                 free(result);
                 result = NULL;
             }
