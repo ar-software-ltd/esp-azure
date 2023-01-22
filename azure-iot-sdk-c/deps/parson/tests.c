@@ -33,8 +33,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "logger.h"
 
-#define TEST(A) printf("%d %-72s-", __LINE__, #A);\
+#define TEST(A) STRAUSS_LOG(eRecordDisable, "%d %-72s-", __LINE__, #A);\
                 if(A){puts(" OK");tests_passed++;}\
                 else{puts(" FAIL");tests_failed++;}
 #define STREQ(A, B) ((A) && (B) ? strcmp((A), (B)) == 0 : 0)
@@ -98,8 +99,8 @@ int main(int argc, char *argv[]) {
     test_suite_11();
     test_memory_leaks();
 
-    printf("Tests failed: %d\n", tests_failed);
-    printf("Tests passed: %d\n", tests_passed);
+    STRAUSS_LOG(eRecordDisable,"Tests failed: %d\n", tests_failed);
+    STRAUSS_LOG(eRecordDisable,"Tests passed: %d\n", tests_passed);
     return 0;
 }
 
@@ -330,7 +331,7 @@ void test_suite_3(void) {
 void test_suite_4() {
     const char *filename = "test_2.txt";
     JSON_Value *a = NULL, *a_copy = NULL;
-    printf("Testing %s:\n", filename);
+    STRAUSS_LOG(eRecordDisable, "Testing %s:\n", filename);
     a = json_parse_file(get_file_path(filename));
     TEST(json_value_equals(a, a)); /* test equality test */
     a_copy = json_value_deep_copy(a);
@@ -617,7 +618,7 @@ void print_commits_info(const char *username, const char *repo) {
 
     /* getting array from root value and printing commit info */
     commits = json_value_get_array(root_value);
-    printf("%-10.10s %-10.10s %s\n", "Date", "SHA", "Author");
+    STRAUSS_LOG(eRecordDisable,"%-10.10s %-10.10s %s\n", "Date", "SHA", "Author");
     for (i = 0; i < json_array_get_count(commits); i++) {
         commit = json_array_get_object(commits, i);
         printf("%.10s %.10s %s\n",
