@@ -41,6 +41,8 @@ IF(WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+add_compile_options("-Wno-unused-functions")
+
 ########### CMake Options ###########
 # Testing
 option(run_e2e_tests "set run_e2e_tests to ON to run e2e tests (default is OFF)" OFF)
